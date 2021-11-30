@@ -10,6 +10,7 @@ render () {
             key={todo.id}
             todo={todo}
             handleChangeProps={this.props.handleChangeProps}
+            deleteTodoProps={this.props.deleteTodoProps}
           />
         ))}
       </ul>
