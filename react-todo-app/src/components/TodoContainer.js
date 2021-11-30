@@ -5,25 +5,8 @@ import InputTodo from "./InputTodo"
 import { v4 as uuidv4 } from "uuid";
 class TodoContainer extends Component {
   state = {
-    todos: [
-      {
-        id: uuidv4(),
-        title: "Setup development environment",
-        completed: true,
-      },
-      {
-        id: uuidv4(),
-        title: "Develop website and add content",
-        completed: false,
-      },
-      {
-        id: uuidv4(),
-        title: "Deploy to live server",
-        completed: false,
-      },
-    ],
+    todos: [],
   };
-
   handleChange = (id) => {
     this.setState((prevState) => ({
       todos: prevState.todos.map((todo) => {
@@ -38,16 +21,6 @@ class TodoContainer extends Component {
     }));
   };
 
-  delTodo = (id) => {
-    this.setState({
-      todos: [
-        ...this.state.todos.filter((todo) => {
-          return todo.id !== id;
-        }),
-      ],
-    });
-  };
-
   addTodoItem = (title, fName) => {
     const newTodo = {
       id: uuidv4(),
@@ -59,6 +32,33 @@ class TodoContainer extends Component {
     });
   };
 
+  setUpdate = (updatedTitle, id) => {
+    this.setState({
+      todos: this.state.todos.map((todo) => {
+        if (todo.id === id) {
+          todo.title = updatedTitle;
+        }
+        return todo;
+      }),
+    });
+  };
+
+  delTodo = (id) => {
+    this.setState({
+      todos: [
+        ...this.state.todos.filter((todo) => {
+          return todo.id !== id;
+        }),
+      ],
+    });
+  };
+
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+      .then((response) => response.json())
+      .then((data) => this.setState({ todos: data }));
+  }
+
   render() {
     return (
       <div className="container">
@@ -69,6 +69,7 @@ class TodoContainer extends Component {
             todos={this.state.todos}
             handleChangeProps={this.handleChange}
             deleteTodoProps={this.delTodo}
+            setUpdate={this.setUpdate}
           />
         </div>
       </div>
