@@ -47,7 +47,7 @@ class TodoContainer extends Component {
     });
   };
 
-  addTodoItem = (title) => {
+  addTodoItem = (title,fName) => {
     const newTodo = {
       id: 4,
       title: title,
